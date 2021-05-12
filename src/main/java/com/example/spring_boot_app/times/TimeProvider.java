@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 public class TimeProvider implements CommandLineRunner {
 
     private final TimeService timeService;
+    private final TimeProviderProperties timeProviderProperties;
 
     @Value("${spring.application.name}")
     private String appName;
@@ -19,13 +20,14 @@ public class TimeProvider implements CommandLineRunner {
     private String welcomeMessage;
 
     @Autowired
-    public TimeProvider(TimeService timeService) {
+    public TimeProvider(TimeService timeService, TimeProviderProperties timeProviderProperties) {
+        this.timeProviderProperties = timeProviderProperties;
         this.timeService = timeService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        Logger.getLogger(TimeProvider.class.getName()).info("running " + appName);
+        Logger.getLogger(TimeProvider.class.getName()).info("running " + appName + " with profile " + timeProviderProperties.getProfile());
         Logger.getLogger(TimeProvider.class.getName()).info("running " + welcomeMessage);
         this.timeService.printCurrentTime();
     }
